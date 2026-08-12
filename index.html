@@ -86,6 +86,7 @@
       <button class="btn" id="btn-start">Commencer la série</button>
       <button class="btn sec" id="btn-tout">Tout cocher</button>
       <button class="btn sec" id="btn-rien">Tout décocher</button>
+      <a class="btn sec" id="lien-cahier" target="_blank" rel="noopener">📖 Le cahier en ligne</a>
       <label class="muted"><input type="checkbox" id="chk-limite" checked> Limiter à <select id="sel-nb"><option>10</option><option selected>20</option><option>30</option><option>40</option></select> questions</label>
     </div>
     <p id="start-msg" style="display:none; margin-top:10px; color:#b03a2e; font-size:.9rem;"></p>
@@ -105,7 +106,9 @@
     <div id="q-choices" class="choices"></div>
     <div id="q-expl" class="expl"></div>
     <div class="toolbar" style="margin-top:14px;">
+      <button class="btn sec hidden" id="btn-prev">← Précédente</button>
       <button class="btn hidden" id="btn-next">Question suivante →</button>
+      <button class="btn sec" id="btn-share">📤 Partager</button>
       <button class="btn sec" id="btn-stop">Arrêter la série</button>
     </div>
     <div class="score-line" id="score-live"></div>
@@ -336,7 +339,7 @@ const CHAINS = [
 
 /* ============ MOTEUR ============ */
 const $ = id => document.getElementById(id);
-let serie = [], idx = 0, bonnes = 0, erreurs = [], parTheme = {};
+let serie = [], idx = 0, bonnes = 0, erreurs = [], parTheme = {}, reponses = [];
 
 function colorise(txt){
   return String(txt).replace(/♥/g,'<span class="red">♥</span>').replace(/♦/g,'<span class="red">♦</span>');
@@ -372,7 +375,8 @@ function demarrer(items){
   serie = sel.flatMap(it => it.steps
     ? it.steps.map((s,i)=>({...s, t:it.t, hand:it.hand, vul:it.vul, n:"chain", chaine:{i:i+1, n:it.steps.length}}))
     : [it]);
-  idx = 0; bonnes = 0; erreurs = []; parTheme = {};
+  serie.forEach(q=>delete q.__ordre);
+  idx = 0; bonnes = 0; erreurs = []; parTheme = {}; reponses = [];
   ecran("ecran-quiz"); afficher();
 }
 $("btn-start").onclick = ()=>{
@@ -397,9 +401,12 @@ $("btn-stop").onclick = fin;
 $("btn-accueil").onclick = ()=>ecran("ecran-accueil");
 $("btn-erreurs").onclick = ()=>{ if(erreurs.length) demarrer(erreurs); };
 $("btn-next").onclick = ()=>{ idx++; idx<serie.length ? afficher() : fin(); };
+$("btn-prev").onclick = ()=>{ if(idx>0){ idx--; afficher(); } };
+$("btn-share").onclick = partager;
 
 function afficher(){
   const q = serie[idx];
+  const rep = reponses[idx];
   $("q-pos").textContent = `Question ${idx+1} / ${serie.length}`;
   $("q-theme").innerHTML = colorise(THEMES[q.t]) +
     (q.chaine ? ` — enchaînement, étape ${q.chaine.i}/${q.chaine.n}` : (NIVEAUX[q.n] ? ` · ${NIVEAUX[q.n].split(" (")[0]}` : ""));
@@ -416,35 +423,78 @@ function afficher(){
                     <div><span class="suit">♣</span> ${q.hand[3]||"—"}</div>`;
   } else hb.classList.add("hidden");
   $("q-text").textContent = q.q;
+  if(!q.__ordre) q.__ordre = melange(q.c.map((txt,i)=>({txt, ok:i===0})));
   const zone = $("q-choices"); zone.innerHTML = "";
-  const opts = q.c.map((txt,i)=>({txt, ok:i===0}));
-  melange(opts).forEach(o=>{
+  q.__ordre.forEach(o=>{
     const b = document.createElement("button");
     b.className = "choice"; b.innerHTML = colorise(o.txt);
     b.dataset.ok = o.ok ? "1" : "0";
-    b.onclick = ()=>repondre(q, o.ok, b, zone);
+    if(rep){
+      b.disabled = true;
+      if(o.ok) b.classList.add("correct");
+      if(!rep.ok && o.txt === rep.choix) b.classList.add("wrong");
+    } else {
+      b.onclick = ()=>repondre(q, o, b, zone);
+    }
     zone.appendChild(b);
   });
-  const ex = $("q-expl"); ex.className = "expl"; ex.innerHTML = "";
-  $("btn-next").classList.add("hidden");
-  $("score-live").textContent = idx ? `Score : ${bonnes} / ${idx}` : "";
+  const ex = $("q-expl");
+  if(rep){
+    ex.className = "expl " + (rep.ok ? "ok" : "ko");
+    ex.innerHTML = (rep.ok ? "<b>Exact !</b> " : "<b>Non.</b> ") + colorise(q.e) + refHtml(q.r);
+    $("btn-next").classList.remove("hidden");
+    $("btn-next").textContent = idx+1 < serie.length ? "Question suivante →" : "Voir le bilan →";
+  } else {
+    ex.className = "expl"; ex.innerHTML = "";
+    $("btn-next").classList.add("hidden");
+  }
+  $("btn-prev").classList.toggle("hidden", idx === 0);
+  const nb = reponses.filter(Boolean).length;
+  $("score-live").textContent = nb ? `Score : ${bonnes} / ${nb}` : "";
 }
 
-function repondre(q, ok, btn, zone){
+function repondre(q, o, btn, zone){
+  if(reponses[idx]) return;
+  reponses[idx] = {ok: o.ok, choix: o.txt};
   [...zone.children].forEach(b=>{
     b.disabled = true;
     if(b.dataset.ok === "1") b.classList.add("correct");
   });
-  if(!ok) btn.classList.add("wrong");
+  if(!o.ok) btn.classList.add("wrong");
   parTheme[q.t] = parTheme[q.t] || {ok:0, tot:0};
   parTheme[q.t].tot++;
-  if(ok){ bonnes++; parTheme[q.t].ok++; } else { erreurs.push(q); }
+  if(o.ok){ bonnes++; parTheme[q.t].ok++; } else { erreurs.push(q); }
   const ex = $("q-expl");
-  ex.className = "expl " + (ok ? "ok" : "ko");
-  ex.innerHTML = (ok ? "<b>Exact !</b> " : "<b>Non.</b> ") + colorise(q.e) + `<span class="ref">${q.r}</span>`;
+  ex.className = "expl " + (o.ok ? "ok" : "ko");
+  ex.innerHTML = (o.ok ? "<b>Exact !</b> " : "<b>Non.</b> ") + colorise(q.e) + refHtml(q.r);
   $("btn-next").classList.remove("hidden");
   $("btn-next").textContent = idx+1 < serie.length ? "Question suivante →" : "Voir le bilan →";
-  $("score-live").textContent = `Score : ${bonnes} / ${idx+1}`;
+  $("score-live").textContent = `Score : ${bonnes} / ${reponses.filter(Boolean).length}`;
+}
+
+const CAHIER_URL = location.hostname === "aurelien-ekleo.github.io" ? "cahier.html" : "https://aurelien-ekleo.github.io/Revision-bridge/cahier.html";
+function refHtml(r){
+  const m = /Cahier §(\d+)(?:\.(\d+))?/.exec(r || "");
+  const lien = m ? ` — <a href="${CAHIER_URL}#sec-${m[1]}${m[2] ? "-"+m[2] : ""}" target="_blank" rel="noopener">📖 ouvrir le chapitre du cahier</a>` : "";
+  return `<span class="ref">${r}${lien}</span>`;
+}
+
+function partager(){
+  const q = serie[idx];
+  const lignes = ["♠♥ Quiz bridge — " + (THEMES[q.t]||"").replace(" (à valider)",""), "Séquence : " + q.seq];
+  if(q.hand) lignes.push("Main : ♠" + (q.hand[0]||"—") + "  ♥" + (q.hand[1]||"—") + "  ♦" + (q.hand[2]||"—") + "  ♣" + (q.hand[3]||"—"));
+  if(q.vul) lignes.push("Vulnérabilité : " + q.vul);
+  lignes.push(q.q);
+  const lettres = ["A","B","C","D"];
+  (q.__ordre || q.c.map(txt=>({txt}))).forEach((o,i)=>lignes.push(lettres[i] + ") " + o.txt));
+  const url = location.origin + location.pathname + (q.__id != null ? "?q=" + q.__id : "");
+  lignes.push("", "Réponds, puis vérifie ici : " + url);
+  const texte = lignes.join("\n");
+  if(navigator.share){
+    navigator.share({text: texte}).catch(()=>{});
+  } else {
+    window.open("https://wa.me/?text=" + encodeURIComponent(texte), "_blank");
+  }
 }
 
 function fin(){
@@ -662,8 +712,16 @@ const EXTRA_SEF = [
 ];
 BANK.push(...EXTRA_SEF);
 
+BANK.forEach((q,i)=>q.__id = i);
+document.getElementById("lien-cahier").href = CAHIER_URL;
 document.getElementById("js-warn").style.display = "none";
 initAccueil();
+(function(){
+  const pq = new URLSearchParams(location.search).get("q");
+  if(!pq) return;
+  const items = pq.split(",").map(n=>BANK[parseInt(n,10)]).filter(Boolean);
+  if(items.length){ $("chk-limite").checked = false; demarrer(items); }
+})();
 </script>
 </body>
 </html>
