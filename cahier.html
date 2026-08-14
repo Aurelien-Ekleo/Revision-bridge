@@ -164,28 +164,171 @@
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
 <style>
-body{font-family:Georgia,'Times New Roman',serif;max-width:860px;margin:0 auto;padding:24px 18px 80px;color:#1a1a1a;background:#faf7f0;line-height:1.55;}
-header#title-block-header{background:linear-gradient(135deg,#134429,#1b5e3a);color:#fff;margin:-24px -18px 24px;padding:26px 18px;text-align:center;border-radius:0 0 12px 12px;}
-header#title-block-header h1{margin:0;font-size:1.5rem;} header#title-block-header p{margin:6px 0 0;opacity:.85;font-size:.9rem;}
-h1{color:#134429;border-bottom:2px solid #c9a227;padding-bottom:6px;margin-top:40px;font-size:1.35rem;}
-h2{color:#134429;margin-top:34px;font-size:1.2rem;} h3{color:#1b5e3a;margin-top:24px;font-size:1.05rem;}
-table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.95rem;background:#fff;}
-th,td{border:1px solid #d8d2c4;padding:7px 10px;text-align:left;vertical-align:top;}
-th{background:#eef3ee;color:#134429;}
-nav#TOC{background:#fff;border:1px solid #e2ddd2;border-radius:10px;padding:14px 22px;margin-bottom:20px;}
-nav#TOC ul{margin:4px 0;padding-left:20px;} nav#TOC a{color:#1b5e3a;text-decoration:none;} nav#TOC a:hover{text-decoration:underline;}
-:target{background:#fdf3d7;outline:3px solid #c9a227;border-radius:4px;scroll-margin-top:12px;}
-h2:target,h3:target{padding:6px 8px;}
-a{color:#1b5e3a;}
-.retour{position:fixed;bottom:18px;right:18px;background:#1b5e3a;color:#fff;padding:9px 14px;border-radius:22px;text-decoration:none;font-size:.85rem;box-shadow:0 2px 8px rgba(0,0,0,.25);}
-</style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
 </head>
 <body>
 <header id="title-block-header">
 <h1 class="title">Cahier des conventions — Saison 2026/2027</h1>
 <p class="subtitle">Bruno · Aurélien (AG) · AL · Vanessa</p>
-<p class="date">Base : système mis à jour le 4 juillet 2026 — Cahier
-compilé le 10 août 2026</p>
+<p class="date">Base : système mis à jour le 4 juillet 2026, complété le
+13 août — Cahier mis à jour le 14 août 2026 (fiches du dossier «
+FIchiers séparés »)</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <h2 id="toc-title">Sommaire</h2>
@@ -224,8 +367,9 @@ href="#ouverture-majeure-le-2-sur-1-forcing-de-manche-fiche-thibault"
 id="toc-ouverture-majeure-le-2-sur-1-forcing-de-manche-fiche-thibault">8.
 Ouverture majeure : le 2 sur 1 forcing de manche (fiche
 Thibault)</a></li>
-<li><a href="#ouverture-1sa-15-17h" id="toc-ouverture-1sa-15-17h">9.
-Ouverture 1SA (15-17H)</a></li>
+<li><a href="#ouverture-1sa-fiche-double-stayman"
+id="toc-ouverture-1sa-fiche-double-stayman">9. Ouverture 1SA (fiche «
+Double Stayman »)</a></li>
 <li><a href="#interventions-adverses-sur-notre-1sa"
 id="toc-interventions-adverses-sur-notre-1sa">10. Interventions adverses
 sur notre 1SA</a></li>
@@ -252,32 +396,39 @@ id="toc-cachalot-après-notre-ouverture-mineure-et-intervention-adverse">15.
 Cachalot (après notre ouverture mineure et intervention
 adverse)</a></li>
 <li><a
+href="#réponses-à-notre-ouverture-majeure-après-intervention-fiche-du-12-août-2026"
+id="toc-réponses-à-notre-ouverture-majeure-après-intervention-fiche-du-12-août-2026">16.
+Réponses à notre ouverture majeure après intervention (fiche du 12 août
+2026)</a></li>
+<li><a
 href="#réponses-aux-interventions-majeures-avec-fit-nous-intervenons-à-1c1p"
-id="toc-réponses-aux-interventions-majeures-avec-fit-nous-intervenons-à-1c1p">16.
+id="toc-réponses-aux-interventions-majeures-avec-fit-nous-intervenons-à-1c1p">17.
 Réponses aux interventions majeures avec fit (nous intervenons à
 1C/1P)</a></li>
 <li><a href="#réponses-aux-interventions-majeures-sans-fit"
-id="toc-réponses-aux-interventions-majeures-sans-fit">17. Réponses aux
+id="toc-réponses-aux-interventions-majeures-sans-fit">18. Réponses aux
 interventions majeures sans fit</a></li>
 <li><a href="#défense-contre-louverture-2k-multi-adverse"
-id="toc-défense-contre-louverture-2k-multi-adverse">18. Défense contre
+id="toc-défense-contre-louverture-2k-multi-adverse">19. Défense contre
 l’ouverture 2K multi adverse</a></li>
 <li><a href="#mini-cuebid-après-ouverture-adverse-2c-et-notre-contre"
-id="toc-mini-cuebid-après-ouverture-adverse-2c-et-notre-contre">19.
+id="toc-mini-cuebid-après-ouverture-adverse-2c-et-notre-contre">20.
 Mini-cuebid (après ouverture adverse 2C et notre contre)</a></li>
-<li><a href="#autres-défenses-et-interventions-feuille-système"
-id="toc-autres-défenses-et-interventions-feuille-système">20. Autres
-défenses et interventions (feuille système)</a></li>
+<li><a
+href="#défenses-sur-ouvertures-faibles-adverses-fiche-bicolores-à-palier-plus-élevé"
+id="toc-défenses-sur-ouvertures-faibles-adverses-fiche-bicolores-à-palier-plus-élevé">21.
+Défenses sur ouvertures faibles adverses (fiche « Bicolores à palier
+plus élevé »)</a></li>
 </ul></li>
 <li><a href="#quatrième-partie-conventions-générales-jeu-de-la-carte"
 id="toc-quatrième-partie-conventions-générales-jeu-de-la-carte">Quatrième
 partie — Conventions générales, jeu de la carte</a>
 <ul>
 <li><a href="#blackwood-entames-et-signalisation"
-id="toc-blackwood-entames-et-signalisation">21. Blackwood, entames et
+id="toc-blackwood-entames-et-signalisation">22. Blackwood, entames et
 signalisation</a></li>
 <li><a href="#points-à-valider-entre-partenaires"
-id="toc-points-à-valider-entre-partenaires">22. Points à valider entre
+id="toc-points-à-valider-entre-partenaires">23. Points à valider entre
 partenaires</a></li>
 </ul></li>
 </ul>
@@ -288,9 +439,9 @@ H = points d’honneur, HL = points honneur + longueur, HLD = points
 honneur + longueur + distribution, S = points de soutien. F = forcing,
 NF = non forcing, FM = forcing de manche, CB = cue-bid, BW =
 Blackwood.</p>
-<p>Ce cahier compile l’intégralité des fiches du dossier « A réunir
-ensemble » (saison 26/27). Le contenu des fiches d’origine est conservé
-; seules la mise en page et l’organisation ont été retravaillées. Les
+<p>Ce cahier compile l’intégralité des fiches du dossier « FIchiers
+séparés » (saison 26/27). Le contenu des fiches d’origine est conservé ;
+seules la mise en page et l’organisation ont été retravaillées. Les
 points restant à valider entre partenaires sont signalés par la mention
 <strong>[À VALIDER]</strong> et regroupés au chapitre final.</p>
 <p>Dans cette édition révisée, le nombre de cartes et les zones de
@@ -298,7 +449,7 @@ points sont précisés systématiquement. Lorsqu’une précision ne figure
 pas littéralement dans une fiche mais découle de la logique interne du
 système (par exemple : le texas Cachalot montre 4 ou 5 cartes, puisque
 les mains de 6 cartes ont leurs propres enchères), elle est suivie de la
-mention <em>(déduit)</em> et récapitulée au chapitre 22 pour validation
+mention <em>(déduit)</em> et récapitulée au chapitre 23 pour validation
 entre partenaires.</p>
 <h1 id="première-partie-vue-densemble-du-système">Première partie — Vue
 d’ensemble du système</h1>
@@ -328,8 +479,8 @@ manche</strong> (chap. 8)</td>
 </tr>
 <tr class="odd">
 <td>1SA</td>
-<td>15-17H — majeure 5e possible <strong>uniquement avec 15H</strong>
-(chap. 9)</td>
+<td>15-17H — majeure 5e possible avec 15H (feuille système) ou 15-16H
+(fiche Double Stayman), jamais 17H (chap. 9)</td>
 </tr>
 <tr class="even">
 <td>2T</td>
@@ -342,7 +493,8 @@ manche</strong> (chap. 8)</td>
 </tr>
 <tr class="even">
 <td>2C / 2P</td>
-<td><strong>Bicolore faible</strong> 5M + 4m+, 5-10H (chap. 13)</td>
+<td><strong>Bicolore faible</strong> 5M + 4m+, 5-10H — vulnérable :
+singleton obligatoire (chap. 13)</td>
 </tr>
 <tr class="odd">
 <td>2SA</td>
@@ -358,7 +510,7 @@ Michael’s précisé, convention 2012, misère dorée, 2SA FM après texas
 majeur, Blackwood 41/30 (sauf atout trèfle : 30/41), BW d’exclusion,
 splinters, enchères de rencontre.</p>
 <p>Entames et signalisation : <strong>parité à l’atout, 4e meilleure à
-SA ; appel direct, défausse en parité</strong> (chap. 21).</p>
+SA ; appel direct, défausse en parité</strong> (chap. 22).</p>
 <h1 id="deuxième-partie-ouvertures-et-développements">Deuxième partie —
 Ouvertures et développements</h1>
 <h2 id="sec-2">2. Ouverture
@@ -1353,18 +1505,212 @@ distribution :</p>
 </tr>
 </tbody>
 </table>
-<h2 id="sec-9">9. Ouverture 1SA (15-17H)</h2>
-<h3 id="sec-9-1">9.1 Résumé (feuille système)</h3>
-<p>Majeure 5e possible <strong>uniquement avec 15H</strong>. 2T Stayman
-si deux majeures 4e ; <strong>3T si une seule majeure 4e</strong>
-(double Stayman, voir fiche). 2SA = <strong>texas carreau</strong> :
-rectification 3m = pas intéressé ; 3T = 3 cartes avec un honneur, ou 4
-cartes sans honneur et jeu max. 2P = enchère bivalente (voir fiche).
-Misère dorée : 1SA–2T ; 2K–2C = 5 cartes à cœur et main limite 8-9H.
-Convention 2012 : 1SA–2T ; 2M–3M’ = artificielle, velléité de chelem,
-fit majeur.</p>
-<h3 id="sec-9-2">9.2 2SA forcing
-de manche après 1SA et texas majeur</h3>
+<h3 id="sec-8-8">8.8 Drury (fiche du 14 août
+2026)</h3>
+<p>Après un passe, face à l’ouverture 1M du partenaire en 3e/4e main :
+2T = Drury, <strong>fit obligatoire</strong>, main limite.</p>
+<p>Réponses de l’ouvreur à 2T : <strong>2M = forcing passe</strong> ;
+<strong>2K = ambiguë, petite ouverture</strong>, on essaie la manche.
+Réponses du répondant à 2K s’il n’y a pas de manche : <strong>2M = 3
+atouts, 3M = 4 atouts</strong> ; sinon : 3M = espoir de chelem ; 4M =
+direct à la manche ; toute autre enchère promet au moins l’ouverture.
+<em>(La fiche superpose deux lectures de 3M — faible 4 atouts et espoir
+de chelem : point à clarifier, voir chap. 23.)</em></p>
+<p>Séquence passe – passe – 1M – (passe) – <strong>2SA = 4 atouts et
+singleton, 11 S+</strong> ; l’ouvreur relaie à 3T : 3K = courte K, 3C =
+courte C, 3P = courte P, <strong>la nomination de l’ATOUT = courte à
+trèfle</strong>.</p>
+<h2 id="sec-9">9. Ouverture 1SA (fiche «
+Double Stayman »)</h2>
+<h3 id="sec-9-1">9.1 Définition de l’ouverture</h3>
+<p>Toute main régulière <strong>15-17H sans majeure 5e</strong> ; une
+main <strong>15-16H avec une majeure 5e en 5332</strong> (jamais avec
+17H) ; et les mains semi-régulières 15-16H : 5T et 4x, 5K et 4T, 4P et
+5C. <em>(La feuille système indique encore « majeure 5e uniquement avec
+15H » — divergence à trancher, voir chap. 23.)</em> <strong>[À
+VALIDER]</strong></p>
+<h3 id="sec-9-2">9.2 Tableau des réponses</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Réponse</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2T</td>
+<td><strong>Stayman</strong> : dès 7H (pour la misère dorée), 8H sinon —
+avec un jeu irrégulier ou les deux majeures</td>
+</tr>
+<tr class="even">
+<td>2K</td>
+<td>Texas cœur</td>
+</tr>
+<tr class="odd">
+<td>2C</td>
+<td>Texas pique</td>
+</tr>
+<tr class="even">
+<td>2P</td>
+<td><strong>Ambivalent</strong> : texas trèfle, ou 8-9H régulier
+(demande de complément pour 3SA)</td>
+</tr>
+<tr class="odd">
+<td>2SA</td>
+<td><strong>Texas carreau</strong></td>
+</tr>
+<tr class="even">
+<td>3T</td>
+<td><strong>Stayman puppet</strong>, FM : recherche d’une majeure 5e
+(jeu régulier, valeurs de manche, sans les deux majeures)</td>
+</tr>
+<tr class="odd">
+<td>3K</td>
+<td><strong>Bicolore mineur 5-5, FM</strong></td>
+</tr>
+<tr class="even">
+<td>3C / 3P</td>
+<td>Unicolore FORT : 3 gros honneurs, 14H+</td>
+</tr>
+<tr class="odd">
+<td>3SA</td>
+<td>9-15H, pour les jouer</td>
+</tr>
+<tr class="even">
+<td>4T</td>
+<td><strong>6 cœurs et 5 piques</strong></td>
+</tr>
+<tr class="odd">
+<td>4K</td>
+<td><strong>6 piques et 5 cœurs</strong></td>
+</tr>
+<tr class="even">
+<td>4C / 4P</td>
+<td>Naturel, barrage (pour les jouer)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec-9-3">9.3 Le Stayman 2T et ses
+développements</h3>
+<p>Réponses de l’ouvreur : 2K (pas de majeure 4e annoncée) ; 2C/2P = au
+moins 4 cartes ; <strong>2SA = les DEUX majeures 4e</strong> ;
+<strong>3T = 5 cœurs et 4 piques</strong>.</p>
+<p>Après 1SA–2T ; 2K, le répondant :</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Enchère</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2C / 2P</td>
+<td><strong>Misère dorée</strong> : 5 cartes, <strong>7-9H (9H
+uniquement en 5332)</strong>. L’ouvreur : passe = mini avec 2-3 atouts ;
+3SA = maxi avec 2 atouts max ; 2SA = maxi 4333, forcing (choix 3SA/4M) ;
+3C/3P = proposition ; 4M = conclusion</td>
+</tr>
+<tr class="even">
+<td>2SA</td>
+<td>Une ou deux majeures 4e, 7-9H</td>
+</tr>
+<tr class="odd">
+<td>3C</td>
+<td><strong>5 piques et 4 cœurs</strong> (avec un 6-4 : nommer la
+couleur 6e sur 3SA ; avec 4540/4504 : nommer la mineure 4e sur 3SA).
+Au-delà de 3SA : 4SA = coup de frein, collante = BW dans la couleur
+citée</td>
+</tr>
+<tr class="even">
+<td>3P</td>
+<td><strong>5 cœurs et 4 piques</strong> (mêmes suites)</td>
+</tr>
+<tr class="odd">
+<td>3T / 3K</td>
+<td>Mineure 5e (avec un singleton, ou 5422 avec 14H+)</td>
+</tr>
+<tr class="even">
+<td>4T</td>
+<td>6 cœurs et 4 piques — l’ouvreur rectifie obligatoirement dans la
+couleur 6e</td>
+</tr>
+<tr class="odd">
+<td>4K</td>
+<td>6 piques et 4 cœurs — idem</td>
+</tr>
+<tr class="even">
+<td>3SA</td>
+<td>9-15H, pour les jouer</td>
+</tr>
+<tr class="odd">
+<td>4SA</td>
+<td>16-17H, propositionnel pour 6SA (ouvreur : passe = mini ; 5m = 4
+cartes ; 6m = 5 cartes)</td>
+</tr>
+<tr class="even">
+<td>5SA</td>
+<td>18-19H, forcing de chelem (6T = 4 trèfles sans dénier 4K ; 6K = 4
+carreaux, dénie 4T ; 6C = 5T-4K ; 6P = 4T-5K)</td>
+</tr>
+<tr class="odd">
+<td>5P</td>
+<td>20H+, ambition de grand chelem (5SA = maximum ; 6T/6K = 5 cartes ;
+6C/6P = résidu 3e avec mineures 4-4 ; 7T/7K = 6 cartes ; 6SA =
+minimum)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec-9-4">9.4 Le Stayman
+puppet 3T (FM, recherche de majeure 5e)</h3>
+<p>Réponses de l’ouvreur : <strong>3K = pas de majeure 5e</strong> ;
+3C/3P = majeure 5e ; <strong>3SA = 5 cœurs et 4 piques</strong>.</p>
+<p>Après 3K, les questions sont <strong>croisées</strong> : 3C = « j’ai
+4 piques » ; 3P = « j’ai 4 cœurs » ; 3SA = pas de majeure 4e, pour les
+jouer ; 4T/4K = main 5332 orientée chelem mineur ; 4C = 4 trèfles ET 4
+carreaux, chelem mineur.</p>
+<p>Après 3C (majeure 5e cœur) : 3P = soutien forcing, ambition de chelem
+à cœur ; 3SA = pour les jouer ; 4T/4K = régulier avec 5 cartes, 15H+ ;
+4C = conclusion. Après 3P : 4C = soutien forcing chelem (économise les
+contrôles) ; mêmes autres suites. 1SA–3T ; 3C–3P ; 3SA = premier
+contrôle pique.</p>
+<p>Zone de chelem : la <strong>collante valide</strong> la recherche,
+<strong>4SA décourage</strong> ; 5T/5K = Blackwood dans la couleur
+nommée (réponses par paliers : 1er = 1 ou 4 clés, 2e = 3 ou 0, 3e = 2
+sans la dame, 4e = 2 avec la dame).</p>
+<h3 id="sec-9-5">9.5 Les texas et le 2P
+ambivalent</h3>
+<p><strong>2SA = texas carreau</strong> : 3T = maximum, fitté, gros
+honneur 3e (« il vaut mieux tenir les trèfles ») ; 3K = rectification
+dans tous les autres cas. Suites du répondant : passe = mini ; 3C/3P =
+FM avec singleton C/P ; 3SA = singleton trèfle, non forcing ; 4T =
+singleton trèfle, ambition de chelem.</p>
+<p><strong>2P ambivalent</strong> (texas trèfle ou 8-9H régulier) :
+l’ouvreur répond <strong>2SA = mini</strong>, <strong>3T = maxi
+(16-17H)</strong>. Après 2SA : passe = pour jouer 2SA ; 3T = pour jouer
+3T (stop) ; 3K = 6 trèfles, 4 carreaux, 12H+ ; 3C/3P = singleton, FM (le
+contrat s’oriente vers 3SA ou 4M, l’ouvreur pouvant avoir 5 cartes) ;
+3SA = singleton carreau, limité à la manche ; 4K = singleton carreau,
+14H+. Après 3T : passe = pour les jouer ; 3K = singleton carreau ; 3C/3P
+= singleton, FM ; 3SA = régulier 8-9 points.</p>
+<h3 id="sec-9-6">9.6 Conventions liées</h3>
+<p><strong>Misère dorée : 7-9H (9H uniquement en 5332)</strong> — la
+fiche Double Stayman tranche les versions antérieures (7-8H sur la
+feuille 2025, 8-9H sur la fiche 2SA FM). <strong>Convention
+2012</strong> : 1SA–2T ; 2M–3M’ = artificielle, velléité de chelem, fit
+majeur. <strong>Chassé-croisé</strong> : voir 9.3 (3C = 5P-4C, 3P =
+5C-4P).</p>
+<h3 id="sec-9-7">9.7
+2SA forcing de manche après 1SA et texas majeur (fiche dédiée)</h3>
 <p>Comme on joue la misère dorée (1SA–2T ; 2K–2C = 5 cœurs, main limite
 8-9H), l’enchère de 2SA dans la séquence 1SA–2K ; 2C–2SA est libérée :
 on la joue <strong>forcing de manche, interdiction de passer</strong>.
@@ -1600,14 +1946,15 @@ et attendre la rectification à 2P, puis dire 3C (risque d’« empailler »
 un fit 12e !).</p>
 <p>Feuille système : 3C = 3-3 majeures (en fonction de la vulnérabilité)
 ; 3P = 4 cœurs / 3 piques (en fonction de la vulnérabilité). <strong>[À
-VALIDER — voir chap. 22 : divergence apparente avec le passe-ou-corrige
+VALIDER — voir chap. 23 : divergence apparente avec le passe-ou-corrige
 3C/3P ci-dessus]</strong></p>
 <h2 id="sec-13">13.
 Ouvertures 2C / 2P : bicolores faibles majeure-mineure</h2>
 <p>Définition : <strong>5 cartes exactement dans la majeure + 4 cartes
 et plus dans une mineure, 5-10H</strong>, pas 3 cartes dans l’autre
-majeure, singleton. <strong>Si vulnérable (rouge) : 9-10H, 5 majeure / 6
-mineure possible.</strong></p>
+majeure. <strong>Si vulnérable (rouge) : singleton obligatoire</strong>
+<em>(feuille système mise à jour du 13 août — l’ancienne version
+indiquait « rouge : 9-10H, 5M/6m possible »)</em>.</p>
 <p>Critères d’ouverture (version compétition N. Lhuissier / G. de
 Tessières, règle des 500/800) : non vulnérable, bicolore 5-4 : 5-9H avec
 5 points dans les 2 couleurs longues ; non vulnérable, bicolore 5-5 :
@@ -1916,10 +2263,109 @@ une courte.</p>
 d’échelle à 6 cartes pour les carreaux dans la fiche — le 4+ reste donc
 ouvert, contrairement aux majeures).</p>
 <h2
-id="réponses-aux-interventions-majeures-avec-fit-nous-intervenons-à-1c1p">16.
+id="réponses-à-notre-ouverture-majeure-après-intervention-fiche-du-12-août-2026">16.
+Réponses à notre ouverture majeure après intervention (fiche du 12 août
+2026)</h2>
+<h3 id="sec-16-1">16.1 Après un contre d’appel
+adverse (1M–(X)–?)</h3>
+<p>Ce qui reste inchangé : soutien au palier de 2 = positif, 8-10 HLD ;
+soutien au palier de 3 = <strong>barrage, 4 atouts</strong> (peut être
+très faible en points d’honneur) ; soutien au palier de 4 = 5 atouts,
+moins de 8H ; changement de couleur à <strong>double saut =
+splinter</strong> (4+ atouts, 13-15 HLD).</p>
+<p>Ce qui change :</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Enchère</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>XX</td>
+<td><strong>Priorité : dès 10H+, y compris avec 3 atouts</strong> — sauf
+fit de 4 atouts (utiliser 2SA), ou 5 piques sur l’ouverture 1C</td>
+</tr>
+<tr class="even">
+<td>2SA</td>
+<td><strong>Truscott : 4 atouts, 11 HLD et illimité</strong></td>
+</tr>
+<tr class="odd">
+<td>2/1 (changement de couleur)</td>
+<td><strong>Non forcing</strong>, dénie le fit ; 5 belles cartes ou 6 ;
+8-10 HL</td>
+</tr>
+<tr class="even">
+<td>Changement de couleur à saut</td>
+<td><strong>Enchère de rencontre</strong> : 11 S et plus, 4 atouts</td>
+</tr>
+<tr class="odd">
+<td>1SA</td>
+<td>8-10 HL, positif, semi-régulier</td>
+</tr>
+<tr class="even">
+<td>3SA</td>
+<td>Naturel, pas fitté</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec-16-2">16.2 Après une
+intervention à la couleur (1M–(2x)–?)</h3>
+<p>Ce qui reste inchangé : soutien palier 2 = positif 8-10 HLD ; palier
+3 = barrage 4 atouts (très faible possible) ; palier 4 = 5 atouts, moins
+de 8H — singleton de préférence, surtout vulnérable, sinon on descend
+d’un palier ; avec 4 atouts et une chicane, on peut monter d’un
+palier.</p>
+<p>Ce qui change :</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Enchère</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2SA</td>
+<td>4 atouts, 11 HLD, illimité</td>
+</tr>
+<tr class="even">
+<td>X</td>
+<td><strong>Dénie le fit</strong> ; sans enchère naturelle disponible ;
+8H+</td>
+</tr>
+<tr class="odd">
+<td>Changement de couleur à saut</td>
+<td><strong>Enchère de rencontre</strong> : 13-15 HLD et 4 atouts</td>
+</tr>
+<tr class="even">
+<td>Splinter</td>
+<td>Uniquement dans la couleur d’intervention</td>
+</tr>
+<tr class="odd">
+<td>Cue-bid</td>
+<td>3 atouts, 11 HLD, illimité</td>
+</tr>
+<tr class="even">
+<td>Changements de couleur</td>
+<td>Forcing, mais <strong>plus auto-forcing</strong></td>
+</tr>
+</tbody>
+</table>
+<h2
+id="réponses-aux-interventions-majeures-avec-fit-nous-intervenons-à-1c1p">17.
 Réponses aux interventions majeures avec fit (nous intervenons à
 1C/1P)</h2>
-<h3 id="sec-16-1">16.1 Soutiens directs (mains
+<h3 id="sec-17-1">17.1 Soutiens directs (mains
 faibles)</h3>
 <table>
 <colgroup>
@@ -1956,7 +2402,7 @@ distribution très excentrée (ex. 2 singletons) non vulnérable</td>
 </table>
 <p><strong>Attention : le 2SA fitté n’existe plus en face d’une
 intervention !</strong></p>
-<h3 id="sec-16-2">16.2 Fit de 3 cartes, 11H+ : le
+<h3 id="sec-17-2">17.2 Fit de 3 cartes, 11H+ : le
 cue-bid</h3>
 <p>CB au palier de 2 = 11H et illimité (même 17H). En face,
 l’intervenant agit ainsi :</p>
@@ -1991,7 +2437,7 @@ arrêts partout ; le partenaire passe ou rectifie à 4M</td>
 </tr>
 </tbody>
 </table>
-<h3 id="sec-16-3">16.3 Fit
+<h3 id="sec-17-3">17.3 Fit
 4e et jeu positif (9-10H+) : quatre enchères précises</h3>
 <table>
 <colgroup>
@@ -2029,9 +2475,9 @@ enchère de rencontre)</td>
 </tr>
 </tbody>
 </table>
-<h2 id="sec-17">17. Réponses aux
+<h2 id="sec-18">18. Réponses aux
 interventions majeures sans fit</h2>
-<h3 id="sec-17-1">17.1 Changements de
+<h3 id="sec-18-1">18.1 Changements de
 couleur au palier de 1</h3>
 <p>Concerne la seule séquence 1m–(1C)–passe–1P. 1P promet 8H+ et peut se
 faire à partir de 4 cartes (sauf main très distribuée, ex. 5152 et 6H :
@@ -2061,7 +2507,7 @@ promet pas) ; CB à saut avec 4 atouts</td>
 </table>
 <p>Remarque : avec 15 HLD, 4 atouts mais seulement 10H (pas les points
 d’ouverture) : répondre… 3P !</p>
-<h3 id="sec-17-2">17.2 Changements de couleur 2
+<h3 id="sec-18-2">18.2 Changements de couleur 2
 sur 1</h3>
 <p>Enchère <strong>forcing</strong>. Au moins 11H avec 5 cartes (parfois
 4 avec plus de 13H si on ne peut pas dire les SA — le CB étant réservé
@@ -2074,7 +2520,7 @@ jouer 1SA.</p>
 répondant au palier de 3) ; une enchère ambiguë (deuxième couleur en
 bicolore économique) ; une enchère forte (2SA ou 3SA, bicolore cher,
 cue-bid ou répétition à saut).</p>
-<h3 id="sec-17-3">17.3 Les annonces à SA</h3>
+<h3 id="sec-18-3">18.3 Les annonces à SA</h3>
 <table>
 <colgroup>
 <col style="width: 50%" />
@@ -2106,7 +2552,7 @@ bonne tenue</td>
 <p>Si la tenue fait défaut : faire un changement de couleur. Comme 1SA
 ne promet pas la tenue, l’intervenant devra posséder un arrêt ou
 vérifier la tenue avant d’annoncer 3SA.</p>
-<h2 id="sec-18">18. Défense contre
+<h2 id="sec-19">19. Défense contre
 l’ouverture 2K multi adverse</h2>
 <p>(Dans un premier temps, on lit « 2P » à la place de « 2K ».)</p>
 <table>
@@ -2172,11 +2618,11 @@ d’ouverture, ~12H+ <em>(déduit)</em>), ou 18H+ toute distribution</td>
 P ; (2K)–passe–(2P)–X = contre d’appel, 4 cartes à C. Avec des piques en
 deuxième position : passer puis contre d’appel ((2K)–passe–(2C)–passe ;
 (passe)–X). (2K)–passe–(2C)–3C = bicolore mineures.</p>
-<h2 id="sec-19">19.
+<h2 id="sec-20">20.
 Mini-cuebid (après ouverture adverse 2C et notre contre)</h2>
 <p>On contre l’ouverture de 2C avec 4 piques et 12H+ (si court à cœur et
 3 piques : 15H+).</p>
-<h3 id="sec-19-1">19.1 Réponses au contre —
+<h3 id="sec-20-1">20.1 Réponses au contre —
 (2C)–X–(passe)–?</h3>
 <table>
 <colgroup>
@@ -2214,7 +2660,7 @@ piques FM</td>
 </tr>
 </tbody>
 </table>
-<h3 id="sec-19-2">19.2 Développements après 2SA</h3>
+<h3 id="sec-20-2">20.2 Développements après 2SA</h3>
 <p>Le contreur répond :</p>
 <table>
 <thead>
@@ -2245,15 +2691,79 @@ piques FM</td>
 <p>Puis, après (2C)–X–(passe)–2SA ; (–)–3T/3K, le répondant : 3 de la
 couleur = non forcing, 8-10H ; 3C = 11H+, 4 piques, demande d’arrêt cœur
 ; 3SA = 11H+, 4 piques et arrêt cœur.</p>
-<h2 id="sec-20">20. Autres
-défenses et interventions (feuille système)</h2>
-<h3 id="sec-20-1">20.1 Nos
+<h2
+id="défenses-sur-ouvertures-faibles-adverses-fiche-bicolores-à-palier-plus-élevé">21.
+Défenses sur ouvertures faibles adverses (fiche « Bicolores à palier
+plus élevé »)</h2>
+<h3 id="sec-21-1">21.1 Nos
 interventions sur l’ouverture 1SA adverse</h3>
 <p>En deuxième position : <strong>X = 4M + 5m ; 2T = Landy ; 2K = multi
 ; 2C/2P = 5 M et mineure 4+ ; 2SA = deux mineures ; 3T, 3K =
 naturel</strong>. En quatrième position : pareil qu’en deuxième.</p>
-<h3 id="sec-20-2">20.2 Défense contre
-les ouvertures 2M adverses</h3>
+<h3 id="sec-21-2">21.2 Défense
+contre les ouvertures 2M faibles adverses</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Enchère</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3M (cue-bid)</td>
+<td><strong>Demande l’arrêt pour jouer 3SA</strong> — préconisation
+d’Olivier Giard retenue par l’équipe, même si les livres donnent «
+bicolore mineur 5-5 » <em>(la feuille système porte encore l’ancienne
+version : à mettre à jour, voir chap. 23)</em></td>
+</tr>
+<tr class="even">
+<td>4T</td>
+<td>Trèfles + l’autre majeure, au moins 5-5</td>
+</tr>
+<tr class="odd">
+<td>4K</td>
+<td>Carreaux + l’autre majeure, au moins 5-5</td>
+</tr>
+<tr class="even">
+<td>4SA</td>
+<td><strong>Violent bicolore mineur, au moins 6-5</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Le reste de la défense (X, enchères naturelles, 2SA 15-17…) suit le
+chapitre 19 (« on lit 2P à la place de 2K »).</p>
+<h3 id="sec-21-3">21.3 Sur un barrage 3T ou 3K
+adverse</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Enchère</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4T (cue-bid)</td>
+<td><strong>Bicolore rouge</strong> (les deux couleurs les moins
+chères)</td>
+</tr>
+<tr class="even">
+<td>4K</td>
+<td><strong>Bicolore majeur</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec-21-4">21.4 Sur un barrage 3C ou 3P
+adverse</h3>
 <table>
 <thead>
 <tr class="header">
@@ -2264,30 +2774,53 @@ les ouvertures 2M adverses</h3>
 <tbody>
 <tr class="odd">
 <td>4T</td>
-<td>Bicolore 5-5 trèfles + l’autre majeure</td>
+<td>Trèfles + l’autre majeure</td>
 </tr>
 <tr class="even">
 <td>4K</td>
-<td>Bicolore 5-5 carreaux + l’autre majeure</td>
+<td>Carreaux + l’autre majeure</td>
 </tr>
 <tr class="odd">
-<td>3M (cue-bid)</td>
-<td>Bicolore 5-5 mineures</td>
+<td>4SA</td>
+<td>Bicolore mineur</td>
 </tr>
 </tbody>
 </table>
-<h3 id="sec-20-3">20.3 Défense
-contre les ouvertures au palier de 4</h3>
-<p>Si ouverture 4C : 4SA = bicolore 5-5 mineures. Si ouverture 4P : 4SA
-= bicolore indéterminé.</p>
-<h3 id="sec-20-4">20.4 À compléter</h3>
-<p>Intervention sur ouverture au palier de 3 : <strong>à remplir pour
-les bicolores</strong>. Intervention sur ouverture de 3SA : <strong>à
-remplir pour les bicolores</strong>. <strong>[À VALIDER]</strong></p>
+<h3 id="sec-21-5">21.5 Sur l’ouverture 3SA
+gambling adverse</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Enchère</th>
+<th>Signification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4T</td>
+<td>Bicolore : l’autre mineure + une majeure (<strong>relais 4K</strong>
+si l’on veut connaître la majeure)</td>
+</tr>
+<tr class="even">
+<td>4K</td>
+<td>Bicolore majeur</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sec-21-6">21.6 Sur un barrage au palier de
+4</h3>
+<p>Sur (4C) : <strong>4SA = bicolore mineur</strong>. Sur (4P) :
+<strong>4SA = bicolore indéterminé</strong> ; développement : sur
+(4P)–4SA, le partenaire répond <strong>toujours 5T s’il est singleton
+cœur</strong>, sinon il nomme sa meilleure couleur.</p>
 <h1
 id="quatrième-partie-conventions-générales-jeu-de-la-carte">Quatrième
 partie — Conventions générales, jeu de la carte</h1>
-<h2 id="sec-21">21. Blackwood, entames et
+<h2 id="sec-22">22. Blackwood, entames et
 signalisation</h2>
 <p><strong>Blackwood 5 clés 41/30</strong> — sauf atout trèfle :
 <strong>30/41</strong>. BW d’exclusion : réponses 30/41. Appel aux rois
@@ -2328,7 +2861,7 @@ signalisation</h2>
 </table>
 <p><strong>Entames</strong> : parité à l’atout ; 4e meilleure à SA.
 <strong>Signalisation</strong> : appel direct ; défausse en parité.</p>
-<h2 id="sec-22">22. Points à valider entre
+<h2 id="sec-23">23. Points à valider entre
 partenaires</h2>
 <p>Les points suivants ressortent de la compilation et méritent une
 décision commune :</p>
@@ -2351,6 +2884,19 @@ feuille système.</li>
 feuille 2025, à confirmer pour 26/27.</li>
 <li><strong>Check Back Stayman « inconstant »</strong> : préciser entre
 partenaires les séquences où il s’applique.</li>
+<li><strong>Nouvelles divergences (fiches d’août)</strong> : (a)
+ouverture 1SA avec majeure 5e — 15H seulement (feuille système) contre
+15-16H jamais 17H (fiche Double Stayman) ; (b) défense sur 2M adverse —
+3M = demande d’arrêt (fiche « Bicolores à palier plus élevé »,
+préconisation Giard/Bruno, retenue dans ce cahier) contre 3M = bicolore
+mineur (feuille système, à corriger) ; (c) fiche Drury — la double
+lecture de 3M (4 atouts faible / espoir de chelem) est à clarifier ; (d)
+misère dorée — TRANCHÉE à 7-9H (9H en 5332) par la fiche Double
+Stayman.</li>
+<li><strong>Fiches du dossier « Z - Feuilles à valider » non
+intégrées</strong> (en attente de validation, à la demande d’Aurélien) :
+Checkback Stayman (nouvelle version), Ouverture de 2SA recherche de fit
+majeur, Puppet Stayman sur ouverture 2SA.</li>
 <li><strong>Précisions déduites à valider</strong> (marquées
 <em>(déduit)</em> dans le cahier) : texas Cachalot = exactement 4 ou 5
 cartes (échelle à 6 cartes aux paliers 2 et 3) ; seuil du texas Cachalot
