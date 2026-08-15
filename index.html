@@ -90,7 +90,7 @@
       <label class="muted"><input type="checkbox" id="chk-limite" checked> Limiter à <select id="sel-nb"><option>10</option><option selected>20</option><option>30</option><option>40</option></select> questions</label>
     </div>
     <p id="start-msg" style="display:none; margin-top:10px; color:#b03a2e; font-size:.9rem;"></p>
-    <p class="notice">Trois types de questions : <b>séquences</b> (que signifie cette enchère ?), <b>mains</b> (quelle enchère faites-vous ?) et <b>enchaînements</b> (la même main suivie sur plusieurs tours d'enchères). Le filtre « Niveaux d'enchère » permet de travailler séparément la 1re enchère, la réponse, la redemande ou les développements. Sauf indication contraire, vous êtes le joueur dont c'est le tour de parler ; les enchères adverses sont entre parenthèses ; X = contre ; le point-virgule « ; » sépare les tours d'enchères — après un « ; », la parole revient au premier joueur de la séquence. Les questions sont tirées du Cahier des conventions 2026-2027 compilé depuis vos fiches ; le thème « Compléments SEF » propose en plus des traitements du SEF 2024 compatibles avec notre système mais pas encore validés entre partenaires (référence indiquée sous chaque réponse) — le score n'est pas conservé à la fermeture de la page.</p>
+    <p class="notice">Trois types de questions : <b>séquences</b> (que signifie cette enchère ?), <b>mains</b> (quelle enchère faites-vous ?) et <b>enchaînements</b> (la même main suivie sur plusieurs tours d'enchères). Le filtre « Niveaux d'enchère » permet de travailler séparément la 1re enchère, la réponse, la redemande ou les développements. Sauf indication contraire, vous êtes le joueur dont c'est le tour de parler ; les enchères adverses sont entre parenthèses ; X = contre ; le point-virgule « ; » sépare les tours d'enchères — après un « ; », la parole revient au premier joueur de la séquence. Les questions sont tirées du Cahier des conventions 2026-2027 compilé depuis vos fiches ; le thème « Compléments SEF » propose en plus des traitements du SEF 2024 compatibles avec notre système mais pas encore validés entre partenaires (référence indiquée sous chaque réponse) — le score n'est pas conservé à la fermeture de la page. À la fin d'une série, le bouton <b>🏆 Défier un partenaire</b> envoie par WhatsApp un lien contenant exactement les mêmes questions : votre partenaire joue la même série et la comparaison des scores s'affiche à la fin.</p>
   </div>
 
   <!-- ÉCRAN QUESTION -->
@@ -120,7 +120,9 @@
     <div class="big" id="f-score"></div>
     <div id="f-comment" style="margin-bottom:8px;"></div>
     <table class="bilan" id="f-bilan"></table>
+    <div id="f-defi" class="hidden" style="margin:14px 0;padding:12px 14px;border:2px solid #c9a227;border-radius:10px;background:#fdf6e0;font-size:1.05em;"></div>
     <div class="toolbar">
+      <button class="btn" id="btn-defi">🏆 Défier un partenaire (WhatsApp)</button>
       <button class="btn hidden" id="btn-erreurs">Rejouer mes erreurs</button>
       <button class="btn sec" id="btn-accueil">Nouvelle série</button>
     </div>
@@ -347,6 +349,8 @@ function colorise(txt){
 }
 function melange(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 
+let defiInfo = null;
+
 function initAccueil(){
   const cont = $("liste-themes"); cont.innerHTML = "";
   const counts = {};
@@ -369,9 +373,9 @@ function initAccueil(){
 }
 function ecran(n){ ["ecran-accueil","ecran-quiz","ecran-final"].forEach(e=>$(e).classList.add("hidden")); $(n).classList.remove("hidden"); }
 
-function demarrer(items){
-  let sel = melange(items.slice());
-  if($("chk-limite").checked && sel.length > +$("sel-nb").value) sel = sel.slice(0, +$("sel-nb").value);
+function demarrer(items, fixe){
+  let sel = fixe ? items.slice() : melange(items.slice());
+  if(!fixe && $("chk-limite").checked && sel.length > +$("sel-nb").value) sel = sel.slice(0, +$("sel-nb").value);
   // aplatit les enchaînements en étapes consécutives (même main suivie)
   serie = sel.flatMap(it => it.steps
     ? it.steps.map((s,i)=>({...s, t:it.t, hand:it.hand, vul:it.vul, n:"chain", chaine:{i:i+1, n:it.steps.length}}))
@@ -515,7 +519,41 @@ function fin(){
   });
   $("btn-erreurs").classList.toggle("hidden", !erreurs.length);
   if(erreurs.length) $("btn-erreurs").textContent = `Rejouer mes erreurs (${erreurs.length})`;
+  const zd = $("f-defi");
+  zd.classList.toggle("hidden", !defiInfo);
+  if(defiInfo){
+    if(defiInfo.sc){
+      const pp = defiInfo.sc.split("-"); const ps = +pp[0]; const pt = +pp[1] || tot;
+      const verdict = bonnes > ps ? "👑 Vous remportez le défi !" :
+                      bonnes < ps ? "Votre partenaire garde la main… prenez votre revanche !" :
+                                    "Égalité parfaite !";
+      zd.innerHTML = `<b>🏆 Résultat du défi</b><br>Vous : <b>${bonnes} / ${tot}</b> — Votre partenaire : <b>${ps} / ${pt}</b><br>${verdict}`;
+    } else {
+      zd.innerHTML = "<b>🏆 Défi joué !</b> Renvoyez votre score par WhatsApp avec le bouton ci-dessous.";
+    }
+  }
+  $("btn-defi").textContent = defiInfo ? "🏆 Renvoyer mon score (WhatsApp)" : "🏆 Défier un partenaire (WhatsApp)";
 }
+
+$("btn-defi").onclick = ()=>{
+  const ids = []; let ok = 0, tot = 0;
+  serie.forEach((q,i)=>{
+    if(q.__id != null && reponses[i]){ ids.push(q.__id); tot++; if(reponses[i].ok) ok++; }
+  });
+  if(!tot) return;
+  const url = location.origin + location.pathname + "?defi=" + ids.join(".") + "&sc=" + ok + "-" + tot;
+  const texte = defiInfo
+    ? "🏆 Défi bridge relevé ! Mon score : " + ok + "/" + tot +
+      (defiInfo.sc ? " (toi : " + defiInfo.sc.replace("-", "/") + ")" : "") +
+      "\nRejoue la série pour la revanche : " + url
+    : "🏆 Défi bridge ! Série de " + tot + " questions — mon score : " + ok + "/" + tot + "." +
+      "\nFais exactement la même série et compare ton score : " + url;
+  if(navigator.share){
+    navigator.share({text: texte}).catch(()=>{});
+  } else {
+    window.open("https://wa.me/?text=" + encodeURIComponent(texte), "_blank");
+  }
+};
 
 /* ============ EXTENSION EXHAUSTIVE DE LA BANQUE ============ */
 const EXTRA = [
@@ -769,7 +807,17 @@ document.getElementById("lien-cahier").href = CAHIER_URL;
 document.getElementById("js-warn").style.display = "none";
 initAccueil();
 (function(){
-  const pq = new URLSearchParams(location.search).get("q");
+  const params = new URLSearchParams(location.search);
+  const dq = params.get("defi");
+  if(dq){
+    const items = dq.split(".").map(n=>BANK[parseInt(n,10)]).filter(Boolean);
+    if(items.length){
+      defiInfo = {sc: /^\d+-\d+$/.test(params.get("sc")||"") ? params.get("sc") : null};
+      demarrer(items, true);
+      return;
+    }
+  }
+  const pq = params.get("q");
   if(!pq) return;
   const items = pq.split(",").map(n=>BANK[parseInt(n,10)]).filter(Boolean);
   if(items.length){ $("chk-limite").checked = false; demarrer(items); }
